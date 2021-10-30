@@ -25,7 +25,7 @@ class UrlService
 
             do {
                 $short_url = $this->genUrl();
-            } while ($this->isUniqueShortUrl($short_url));
+            } while (!$this->isUniqueShortUrl($short_url));
         } else {
             $custom = 0;
         }

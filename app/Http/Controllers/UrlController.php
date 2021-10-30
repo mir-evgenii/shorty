@@ -13,24 +13,22 @@ class UrlController extends Controller
     {
         $long_url = $request->input('URL');
 
-        // $url = new Url();
-        // $url->add('short', $long_url, 0);
-
         $url_service = new UrlService();
-        $q = $url_service->add($long_url);
+        $result = $url_service->add($long_url);
 
-        return "Add $q";
+        return "Add $result";
     }
 
     public function addCustom(Request $request)
     {
+        // TODO обьединить с add методом, код почти одинаковый
         $short_url = $request->short_url;
         $long_url = $request->input('URL');
 
-        $url = new Url();
-        $url->add($short_url, $long_url, 1);
+        $url_service = new UrlService();
+        $result = $url_service->add($long_url, $short_url);
 
-        return "Add custom $long_url";
+        return "Add custom $result";
     }
 
     public function redirect(Request $request)
@@ -38,11 +36,12 @@ class UrlController extends Controller
         $url = Url::findShort($request->short_url);
         $long_url = $url->long;
 
-        return "Redirect $long_url";
+        return redirect("$long_url");
     }
 
     public function saveRedirect(Request $request)
     {
+        // TODO обьединить с redirect, код почти одинаковый
         $url = Url::findShort($request->short_url);
         $long_url = $url->long;
 
