@@ -18,7 +18,7 @@ class UrlController extends Controller
         $result = url($result);
         $result = ['short_url' => $result];
 
-        return response()->json($result);
+        return $result;
     }
 
     public function addCustom(Request $request)
@@ -29,8 +29,8 @@ class UrlController extends Controller
 
         $url_service = new UrlService();
         $result = $url_service->add($long_url, $short_url);
+        $result = url($result);
         $result = ['short_url' => $result];
-        $result->toJson();
 
         return $result;
     }
