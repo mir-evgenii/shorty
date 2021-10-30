@@ -8,20 +8,37 @@ class UrlService
 {
     public function add($long_url, $short_url=null)
     {
-        // if ($this->isCorrectUrl($long_url)) {
-        //     return 'isCorrectUrl';
-        // }
+        if (!$this->isCorrectUrl($long_url)) {
+            return 'Not correct URL!';
+        }
 
-        // $url = $this->findLongUrl($long_url);
-        // if ($url) {
-        //     return $url->short;
-        // }
+        if (($short_url != null) && (!$this->isUniqueShortUrl($short_url) == true)) {
+            return 'Not unique short URL!';
+        }
 
-        return $this->genUrl();
+        if ($short_url == null) {
+            $custom = 1;
+            $find_long_url = $this->findLongUrl($long_url);
+            if ($find_long_url) {
+                return $find_long_url->short;
+            }
+
+            do {
+                $short_url = $this->genUrl();
+            } while ($this->isUniqueShortUrl($short_url));
+        } else {
+            $custom = 0;
+        }
+
+        $url = new Url();
+        $url->add($short_url, $long_url, $custom);
+
+        return $short_url;
     }
 
     private function isCorrectUrl($long_url)
     {
+        // TODO добавить проверку по регулярке
         $curl = curl_init($long_url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_HEADER, false);
@@ -42,14 +59,14 @@ class UrlService
 
         if ($url == null) {
             return false;
-        } 
+        }
 
         return $url;
     }
 
-    private function isBadUrl()
+    private function isBadUrl($long_url)
     {
-        //провека длинного URL по справочнику запрешенных URL
+        // TODO провека длинного URL по справочнику запрешенных URL
     }
 
     private function isUniqueShortUrl($short_url)
@@ -65,7 +82,7 @@ class UrlService
 
     private function isBadCustomUrl($short_url)
     {
-        //проверка нового URL если он кастомный (проверка по справочнику запрешенных слов)
+        // TODO проверка нового URL если он кастомный (проверка по справочнику запрешенных слов)
     }
 
     private function genUrl()

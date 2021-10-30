@@ -19,7 +19,7 @@ class UrlController extends Controller
         $url_service = new UrlService();
         $q = $url_service->add($long_url);
 
-        return "Add $long_url $q";
+        return "Add $q";
     }
 
     public function addCustom(Request $request)
