@@ -4,13 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-// use App\Models\Url;
+use App\Models\Url;
 
 class UrlController extends Controller
 {
     public function add(Request $request)
     {
         $long_url = $request->input('URL');
+
+        $url = new Url();
+        $url->add('short', $long_url, 0);
+
         return "Add $long_url";
     }
 
