@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UrlController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,22 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::post('/add', [UrlController::class, 'add']);
 
-Route::post('/add', function () {
-    return 'New gen short url';
-});
+Route::post('/{short_url}', [UrlController::class, 'addCustom']);
 
-Route::post('/{short_url}', function () {
-    return 'New custom short url';
-});
+Route::get('/{short_url}', [UrlController::class, 'redirect']);
 
-Route::get('/{short_url}', function () {
-    return 'Reconnect long url';
-});
-
-Route::get('/{short_url}/s', function () {
-    return 'Reconnect long url with button';
-});
+Route::get('/{short_url}/s', [UrlController::class, 'saveRedirect']);
