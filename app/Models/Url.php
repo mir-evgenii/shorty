@@ -17,19 +17,19 @@ class Url extends Model
         $this->save();
     }
 
-    public static function findLong($short)
+    public static function findShort($short)
     {
-        $long = Url::where('short', $short)->first();
+        $url = Url::where('short', $short)->first();
 
-        return $long;
+        return $url;
     }
 
-    public static function findShort($long)
+    public static function findLong($long)
     {
-        $short = Url::where('long', $long)
+        $url = Url::where('long', $long)
             ->where('custom', 0)
             ->first();
 
-        return $short;
+        return $url;
     }
 }
