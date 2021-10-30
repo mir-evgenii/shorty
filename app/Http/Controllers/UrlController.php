@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Url;
+use App\Services\UrlService;
 
 class UrlController extends Controller
 {
@@ -15,7 +16,10 @@ class UrlController extends Controller
         $url = new Url();
         $url->add('short', $long_url, 0);
 
-        return "Add $long_url";
+        $url_service = new UrlService();
+        $q = $url_service->add();
+
+        return "Add $long_url $q";
     }
 
     public function addCustom(Request $request)
