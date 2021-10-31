@@ -33,18 +33,33 @@ class UrlTest extends TestCase
         $res = $response->dump();
         $shortUrl = $res->baseResponse->original['URL'];
 
-        $curl = curl_init($shortUrl);
+        $httpCode = $this->getHttpCode($shortUrl);
+        echo "\nHttp код страницы переадресации: ".$httpCode."\n";
+
+        $title = $this->getHtmlPageTitle($shortUrl);
+        echo "\nПереадресован на страницу: ".$title."\n";
+    }
+
+    private function getHttpCode($url)
+    {
+        $curl = curl_init($url);
         curl_exec($curl);
         $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         curl_close($curl);
 
+        return $http_code;
+    }
+
+    private function getHtmlPageTitle($url)
+    {
         libxml_use_internal_errors(true);
         $dom = new DOMDocument();
-        $dom->loadHTMLFile($shortUrl);
+        $dom->loadHTMLFile($url);
         $anchors = $dom->getElementsByTagName('title');
         foreach ($anchors as $a) {
             $title = $a->nodeValue;
         }
-        echo "\nПереадресован на страницу: ".$title."\n";
+
+        return $title;
     }
 }
