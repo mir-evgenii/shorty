@@ -23,33 +23,7 @@ class UrlController extends Controller
         }
 
         $long_url = $request->input('URL');
-
-        $url_service = new UrlService();
-        $result = $url_service->add($long_url);
-
-        if ($result[0]) {
-            return response(['URL' => $result[1]], self::ERROR_HTTP_STATUS);
-        }
-
-        $result = url($result[1]);
-        $result = ['URL' => $result];
-
-        return $result;
-    }
-
-    public function addCustom(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'URL' => 'required|url'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->messages(), self::ERROR_HTTP_STATUS);
-        }
-
-        // TODO обьединить с add методом, код почти одинаковый
         $short_url = $request->short_url;
-        $long_url = $request->input('URL');
 
         $url_service = new UrlService();
         $result = $url_service->add($long_url, $short_url);

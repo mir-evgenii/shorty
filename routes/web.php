@@ -16,6 +16,6 @@ use App\Http\Controllers\UrlController;
 
 Route::post('/add', [UrlController::class, 'add']);
 
-Route::post('/{short_url}', [UrlController::class, 'addCustom']);
+Route::post('/{short_url}', [UrlController::class, 'add']);
 
 Route::get('/{short_url}', [UrlController::class, 'redirect']);
