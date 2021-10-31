@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Validator;
 
 class UrlController extends Controller
 {
+    const ERROR_HTTP_STATUS = 422;
+
     public function add(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -17,7 +19,7 @@ class UrlController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->messages(), 422);
+            return response()->json($validator->messages(), self::ERROR_HTTP_STATUS);
         }
 
         $long_url = $request->input('URL');
@@ -26,7 +28,7 @@ class UrlController extends Controller
         $result = $url_service->add($long_url);
 
         if ($result[0]) {
-            return response(['URL' => $result[1]], 422);
+            return response(['URL' => $result[1]], self::ERROR_HTTP_STATUS);
         }
 
         $result = url($result[1]);
@@ -42,7 +44,7 @@ class UrlController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->messages(), 422);
+            return response()->json($validator->messages(), self::ERROR_HTTP_STATUS);
         }
 
         // TODO обьединить с add методом, код почти одинаковый
@@ -53,7 +55,7 @@ class UrlController extends Controller
         $result = $url_service->add($long_url, $short_url);
 
         if ($result[0]) {
-            return response(['URL' => $result[1]], 422);
+            return response(['URL' => $result[1]], self::ERROR_HTTP_STATUS);
         }
 
         $result = url($result[1]);
@@ -67,14 +69,6 @@ class UrlController extends Controller
         $url = Url::findShort($request->short_url);
         $long_url = $url->long;
 
-        return redirect("$long_url");
-    }
-
-    public function saveRedirect(Request $request)
-    {
-        $url = Url::findShort($request->short_url);
-        $long_url = $url->long;
-
-        return "Save redirect $long_url";
+        return redirect($long_url);
     }
 }

@@ -6,6 +6,10 @@ use App\Models\Url;
 
 class UrlService
 {
+    const SUCCESS_HTTP_STATUS = 200;
+    const SYMBOLS_FOR_URI = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const LENGTH_URI = 6;
+
     public function add($long_url, $short_url=null)
     {
         if (!$this->isCorrectUrl($long_url)) {
@@ -45,7 +49,7 @@ class UrlService
         $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         curl_close($curl);
  
-        if ($http_code == '200') {
+        if ($http_code == self::SUCCESS_HTTP_STATUS) {
             return true;
         }
 
@@ -63,11 +67,6 @@ class UrlService
         return $url;
     }
 
-    private function isBadUrl($long_url)
-    {
-        // TODO провека длинного URL по справочнику запрешенных URL
-    }
-
     private function isUniqueShortUrl($short_url)
     {
         $url = Url::findShort($short_url);
@@ -79,20 +78,12 @@ class UrlService
         return false;
     }
 
-    private function isBadCustomUrl($short_url)
-    {
-        // TODO проверка нового URL если он кастомный (проверка по справочнику запрешенных слов)
-    }
-
     public static function genUri()
     {
-        $input = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $strength = 6;
-
-        $input_length = strlen($input);
+        $input_length = strlen(self::SYMBOLS_FOR_URI);
         $random_string = '';
-        for($i = 0; $i < $strength; $i++) {
-            $random_character = $input[mt_rand(0, $input_length - 1)];
+        for($i = 0; $i < self::LENGTH_URI; $i++) {
+            $random_character = self::SYMBOLS_FOR_URI[mt_rand(0, $input_length - 1)];
             $random_string .= $random_character;
         }
 
