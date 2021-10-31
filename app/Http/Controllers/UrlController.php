@@ -17,15 +17,20 @@ class UrlController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->messages(), 200);
+            return response()->json($validator->messages(), 422);
         }
 
         $long_url = $request->input('URL');
 
         $url_service = new UrlService();
         $result = $url_service->add($long_url);
-        $result = url($result);
-        $result = ['short_url' => $result];
+
+        if ($result[0]) {
+            return response(['URL' => $result[1]], 422);
+        }
+
+        $result = url($result[1]);
+        $result = ['URL' => $result];
 
         return $result;
     }
@@ -37,7 +42,7 @@ class UrlController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->messages(), 200);
+            return response()->json($validator->messages(), 422);
         }
 
         // TODO обьединить с add методом, код почти одинаковый
@@ -46,8 +51,13 @@ class UrlController extends Controller
 
         $url_service = new UrlService();
         $result = $url_service->add($long_url, $short_url);
-        $result = url($result);
-        $result = ['short_url' => $result];
+
+        if ($result[0]) {
+            return response(['URL' => $result[1]], 422);
+        }
+
+        $result = url($result[1]);
+        $result = ['URL' => $result];
 
         return $result;
     }

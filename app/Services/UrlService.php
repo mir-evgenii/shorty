@@ -9,18 +9,18 @@ class UrlService
     public function add($long_url, $short_url=null)
     {
         if (!$this->isCorrectUrl($long_url)) {
-            return 'Not correct URL!';
+            return [1, 'Not correct URL!'];
         }
 
         if (($short_url != null) && (!$this->isUniqueShortUrl($short_url) == true)) {
-            return 'Not unique short URL!';
+            return [1, 'Not unique short URL!'];
         }
 
         if ($short_url == null) {
             $custom = 1;
             $find_long_url = $this->findLongUrl($long_url);
             if ($find_long_url) {
-                return $find_long_url->short;
+                return [0, $find_long_url->short];
             }
 
             do {
@@ -33,7 +33,7 @@ class UrlService
         $url = new Url();
         $url->add($short_url, $long_url, $custom);
 
-        return $short_url;
+        return [0, $short_url];
     }
 
     private function isCorrectUrl($long_url)
