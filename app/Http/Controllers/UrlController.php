@@ -6,11 +6,20 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Url;
 use App\Services\UrlService;
+use Illuminate\Support\Facades\Validator;
 
 class UrlController extends Controller
 {
     public function add(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'URL' => 'required|url'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->messages(), 200);
+        }
+
         $long_url = $request->input('URL');
 
         $url_service = new UrlService();
@@ -23,6 +32,14 @@ class UrlController extends Controller
 
     public function addCustom(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'URL' => 'required|url'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->messages(), 200);
+        }
+
         // TODO обьединить с add методом, код почти одинаковый
         $short_url = $request->short_url;
         $long_url = $request->input('URL');
