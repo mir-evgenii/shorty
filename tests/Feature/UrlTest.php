@@ -63,12 +63,12 @@ class UrlTest extends TestCase
 
         $response->assertStatus(self::SUCCESS_HTTP_STATUS);
         $res = $response->dump();
-        $shortUrl = $res->baseResponse->original['URL'];
+        $short_url = $res->baseResponse->original['URL'];
 
         $response = $this->postJson('/add', ['URL' => self::VALID_URL]);
         $response->assertStatus(self::SUCCESS_HTTP_STATUS);
         $res = $response->dump();
-        $response->assertJsonPath('URL', $shortUrl);
+        $response->assertJsonPath('URL', $short_url);
     }
 
     private function addUrlAndRedidect($uri)
@@ -77,12 +77,12 @@ class UrlTest extends TestCase
 
         $response->assertStatus(self::SUCCESS_HTTP_STATUS);
         $res = $response->dump();
-        $shortUrl = $res->baseResponse->original['URL'];
+        $short_url = $res->baseResponse->original['URL'];
 
-        $httpCode = $this->getHttpCode($shortUrl);
-        echo "\nHttp код страницы переадресации: ".$httpCode."\n";
+        $http_code = $this->getHttpCode($short_url);
+        echo "\nHttp код страницы переадресации: ".$http_code."\n";
 
-        $title = $this->getHtmlPageTitle($shortUrl);
+        $title = $this->getHtmlPageTitle($short_url);
         echo "\nПереадресован на страницу: ".$title."\n";
     }
 

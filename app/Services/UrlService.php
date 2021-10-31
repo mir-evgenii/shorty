@@ -82,7 +82,7 @@ class UrlService
     {
         $input_length = strlen(self::SYMBOLS_FOR_URI);
         $random_string = '';
-        for($i = 0; $i < self::LENGTH_URI; $i++) {
+        for ($i = 0; $i < self::LENGTH_URI; $i++) {
             $random_character = self::SYMBOLS_FOR_URI[mt_rand(0, $input_length - 1)];
             $random_string .= $random_character;
         }
