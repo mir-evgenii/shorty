@@ -38,7 +38,6 @@ class UrlService
 
     private function isCorrectUrl($long_url)
     {
-        // TODO добавить проверку по регулярке
         $curl = curl_init($long_url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_HEADER, false);
