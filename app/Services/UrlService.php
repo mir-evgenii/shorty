@@ -24,7 +24,7 @@ class UrlService
             }
 
             do {
-                $short_url = $this->genUrl();
+                $short_url = UrlService::genUri();
             } while (!$this->isUniqueShortUrl($short_url));
         } else {
             $custom = 0;
@@ -84,7 +84,7 @@ class UrlService
         // TODO проверка нового URL если он кастомный (проверка по справочнику запрешенных слов)
     }
 
-    private function genUrl()
+    public static function genUri()
     {
         $input = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $strength = 6;
